@@ -1,20 +1,17 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.json()); // Important to fetch the json while sending through form
 
 app.use("/api/admin", adminRoutes);
-app.use("/api", shopRoutes);
 
-app.use((req, res, next) => {
-  res.status(404).send("<h1>Page not found</h1>");
-});
-app.listen(5000);
+app.use(shopRoutes);
+
+app.listen(6000);

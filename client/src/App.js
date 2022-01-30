@@ -1,15 +1,21 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-//Components
-import Navigations from "./components/Navigations";
-import { router } from "./router";
+// Components
+import AddProduct from "./components/AddProduct";
+import Shop from "./components/Shop";
+import { OuterLayout } from "./OuterLayout";
+
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
-    <Router>
-      <Navigations />
-      {router}
-    </Router>
+    <Routes>
+      <Route path="/" element={<OuterLayout />}>
+        <Route index element={<Shop />} />
+        <Route path="/add-product" element={<AddProduct />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   );
 }
 
