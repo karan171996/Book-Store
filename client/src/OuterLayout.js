@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import "./OuterLayout.css";
 
 export function OuterLayout() {
@@ -7,12 +7,37 @@ export function OuterLayout() {
       <nav className="main-header__nav">
         <ul className="main-header__item-list">
           <li className="main-header__item">
-            <Link className="active" to="/">
+            <NavLink
+              style={({ isActive }) =>
+                isActive
+                  ? {
+                      color: "#6200ff",
+                    }
+                  : {
+                      color: "black",
+                    }
+              }
+              to="/"
+            >
               Shop
-            </Link>
+            </NavLink>
           </li>
           <li className="main-header__item">
-            <Link to="/add-product">Add Product</Link>
+            <NavLink
+              style={({ isActive }) =>
+                isActive
+                  ? {
+                      color: "#6200ff",
+                    }
+                  : {
+                      color: "black",
+                    }
+              }
+              activeClassName="active"
+              to="/add-product"
+            >
+              Add Product
+            </NavLink>
           </li>
         </ul>
       </nav>
