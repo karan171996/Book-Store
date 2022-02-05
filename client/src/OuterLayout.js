@@ -2,41 +2,41 @@ import { Outlet, NavLink } from "react-router-dom";
 import "./OuterLayout.css";
 
 export function OuterLayout() {
+  const activeStyle = ({ isActive }) =>
+    isActive
+      ? {
+          color: "#6200ff",
+        }
+      : {
+          color: "black",
+        };
   return (
     <header className="main-header">
       <nav className="main-header__nav">
         <ul className="main-header__item-list">
           <li className="main-header__item">
-            <NavLink
-              style={({ isActive }) =>
-                isActive
-                  ? {
-                      color: "#6200ff",
-                    }
-                  : {
-                      color: "black",
-                    }
-              }
-              to="/"
-            >
+            <NavLink style={activeStyle} to="/">
               Shop
             </NavLink>
           </li>
           <li className="main-header__item">
-            <NavLink
-              style={({ isActive }) =>
-                isActive
-                  ? {
-                      color: "#6200ff",
-                    }
-                  : {
-                      color: "black",
-                    }
-              }
-              activeClassName="active"
-              to="/add-product"
-            >
+            <NavLink style={activeStyle} to="/products">
+              Products
+            </NavLink>
+          </li>
+          <li className="main-header__item">
+            <NavLink style={activeStyle} to="/cart">
+              Cart
+            </NavLink>
+          </li>
+          <li className="main-header__item">
+            <NavLink style={activeStyle} to="/add-product">
               Add Product
+            </NavLink>
+          </li>
+          <li className="main-header__item">
+            <NavLink style={activeStyle} to="/admin/products">
+              Admin Product
             </NavLink>
           </li>
         </ul>
