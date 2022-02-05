@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+//api
+// import { fetchProducts } from "../api/fetchProducts";
+
 const Shop = () => {
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
-    const product = fetchProducts().then((res) => res.json());
-    console.log("product", product);
+    fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
-    const res = await axios.get("/api/shops/");
-    return await res;
+  const fetchProducts = () => {
+    axios.get("/api/shops").then((res) => {
+      setProduct(res?.data?.products || []);
+    });
   };
+
   return (
     <div>
       <h1>My Products</h1>
