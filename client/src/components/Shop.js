@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./Shop.css";
+
+//book-image
+import book from "../asset/books.jpeg";
 
 //api
 // import { fetchProducts } from "../api/fetchProducts";
@@ -18,9 +22,17 @@ const Shop = () => {
   };
 
   return (
-    <div>
-      <h1>My Products</h1>
-      <p>List of All the products....</p>
+    <div className="shop-container">
+      <div className="card-container">
+        {product.map((item, index) => (
+          <div className="card" key={index}>
+            <h3>{item?.title}</h3>
+            <img className="book-image" src={book} alt="book" />
+            <p>This is the random subtitle for this book</p>
+            <button>Add to Cart</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
