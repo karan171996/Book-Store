@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Css imports
 import "./AddProduct.css";
@@ -7,17 +8,17 @@ import "./AddProduct.css";
 const AddProduct = () => {
   const [title, setTitle] = useState("");
 
-  const getData = async () => {
-    const res = await axios.post("/api/admin/products", {
+  let navigate = useNavigate();
+  const getData = () => {
+    return axios.post("/api/admin/products", {
       title,
     });
-    return await res;
   };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     getData().then((res) => {
-      if (res?.data?.res === "success") {
-        window.location.href = "http://localhost:3000/";
+      if (res?.status === 200) {
+        navigate("/");
       }
     });
   };
