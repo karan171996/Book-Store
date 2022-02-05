@@ -12,6 +12,6 @@ app.use(bodyParser.json()); // Important to fetch the json while sending through
 
 app.use("/api/admin", adminRoutes);
 
-app.use(shopRoutes);
+app.use("/api/shops", shopRoutes);
 
 app.listen(6000);
