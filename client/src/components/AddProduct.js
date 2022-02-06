@@ -7,11 +7,17 @@ import "./AddProduct.css";
 
 const AddProduct = () => {
   const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
 
   let navigate = useNavigate();
   const getData = () => {
-    return axios.post("/api/admin/products", {
+    return axios.post("/api/admin/add-products", {
       title,
+      image,
+      description,
+      price,
     });
   };
   const onSubmitHandler = async (e) => {
@@ -33,6 +39,37 @@ const AddProduct = () => {
             name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="form-control">
+          <label for="image">Image Url</label>
+          <input
+            id="image"
+            type="text"
+            name="image"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+          />
+        </div>
+        <div className="form-control">
+          <label for="description">Description</label>
+          <input
+            id="description"
+            type="text"
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+
+        <div className="form-control">
+          <label for="price">Price</label>
+          <input
+            id="price"
+            type="number"
+            name="price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
           />
         </div>
         <button type="submit">Add product</button>
