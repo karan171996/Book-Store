@@ -18,3 +18,7 @@
     width:400px;
     height:200px;
 }
+.button-section {
+    display:flex;
+    gap:20px;
+}

@@ -1,25 +1,18 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import "./Shop.css";
 
-//book-image
-import book from "../asset/books.jpeg";
-
 //api
-// import { fetchProducts } from "../api/fetchProducts";
+import { useFetchProducts } from "../api/fetchProducts";
 
 const Shop = () => {
   const [product, setProduct] = useState([]);
+  const [products, loading] = useFetchProducts();
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = () => {
-    axios.get("/api/shops").then((res) => {
-      setProduct(res?.data?.products || []);
-    });
-  };
+    if (!loading && products.length) {
+      setProduct(products);
+    }
+  }, [products, loading]);
 
   return (
     <div className="shop-container">
@@ -30,7 +23,10 @@ const Shop = () => {
             <img className="book-image" src={item.imageUrl} alt="book" />
             <p>{item?.description}</p>
             <p>{item?.price}</p>
-            <button>Add to Cart</button>
+            <div className="button-section">
+              <button>Details</button>
+              <button>Add to Cart</button>
+            </div>
           </div>
         ))}
       </div>

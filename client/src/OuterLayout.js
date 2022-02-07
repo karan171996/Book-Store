@@ -30,6 +30,11 @@ export function OuterLayout() {
             </NavLink>
           </li>
           <li className="main-header__item">
+            <NavLink style={activeStyle} to="/orders">
+              Orders
+            </NavLink>
+          </li>
+          <li className="main-header__item">
             <NavLink style={activeStyle} to="/add-product">
               Add Product
             </NavLink>
