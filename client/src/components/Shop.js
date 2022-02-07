@@ -27,8 +27,9 @@ const Shop = () => {
         {product.map((item, index) => (
           <div className="card" key={index}>
             <h3>{item?.title}</h3>
-            <img className="book-image" src={book} alt="book" />
-            <p>This is the random subtitle for this book</p>
+            <img className="book-image" src={item.imageUrl} alt="book" />
+            <p>{item?.description}</p>
+            <p>{item?.price}</p>
             <button>Add to Cart</button>
           </div>
         ))}

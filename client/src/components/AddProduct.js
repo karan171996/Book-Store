@@ -53,12 +53,14 @@ const AddProduct = () => {
         </div>
         <div className="form-control">
           <label for="description">Description</label>
-          <input
+          <textarea
             id="description"
             type="text"
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            rows="4"
+            cols="40"
           />
         </div>
 

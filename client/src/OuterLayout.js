@@ -5,7 +5,7 @@ export function OuterLayout() {
   const activeStyle = ({ isActive }) =>
     isActive
       ? {
-          color: "#6200ff",
+          color: "#fff",
         }
       : {
           color: "black",

@@ -10,8 +10,8 @@
     flex-direction: column;
     align-items: center;
     width: 350px;
-    height:350px;
-    box-shadow: 5px 10px 8px #a8a7a7;
+    height:400px;
+    box-shadow: 5px 10px 30px #a8a7a7;
 }
 .book-image {
     max-width:100%;
