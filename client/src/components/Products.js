@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./Shop.css";
 
 //api
 import { useFetchProducts } from "../api/useFetchProducts";
 
-const Shop = () => {
+const Products = () => {
   const [product, setProduct] = useState([]);
   const [products, loading] = useFetchProducts();
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (!loading && products.length) {
       setProduct(products);
     }
   }, [products, loading]);
+
+  const productDetailHandler = () => {};
 
   return (
     <div className="shop-container">
@@ -24,7 +29,11 @@ const Shop = () => {
             <p>{item?.description}</p>
             <p>{item?.price}</p>
             <div className="button-section">
-              <button>Details</button>
+              <button
+                onClick={() => navigate(`/products/123`, { replace: true })}
+              >
+                Details
+              </button>
               <button>Add to Cart</button>
             </div>
           </div>
@@ -33,4 +42,4 @@ const Shop = () => {
     </div>
   );
 };
-export default Shop;
+export default Products;
