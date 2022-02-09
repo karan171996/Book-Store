@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Shop.css";
 
 //api
+import { postCartDetails } from "../api/postCartdetails";
 import { useFetchProducts } from "../api/useFetchProducts";
 
 const Products = () => {
@@ -17,7 +18,12 @@ const Products = () => {
     }
   }, [products, loading]);
 
-  const productDetailHandler = () => {};
+  const addToCartHandler = (id) => {
+    const response = postCartDetails(id);
+    if (response) {
+      navigate("/cart");
+    }
+  };
 
   return (
     <div className="shop-container">
@@ -26,15 +32,21 @@ const Products = () => {
           <div className="card" key={index}>
             <h3>{item?.title}</h3>
             <img className="book-image" src={item.imageUrl} alt="book" />
-            <p>{item?.description}</p>
-            <p>{item?.price}</p>
-            <div className="button-section">
-              <button
-                onClick={() => navigate(`/products/123`, { replace: true })}
-              >
-                Details
-              </button>
-              <button>Add to Cart</button>
+            <div className="description-section">
+              <p className="description">{item?.description}</p>
+              <p className="price">{item?.price}</p>
+              <div className="button-section">
+                <button
+                  onClick={() =>
+                    navigate(`/products/${item.id}`, { replace: true })
+                  }
+                >
+                  Details
+                </button>
+                <button onClick={() => addToCartHandler(item?.id)}>
+                  Add to Cart
+                </button>
+              </div>
             </div>
           </div>
         ))}

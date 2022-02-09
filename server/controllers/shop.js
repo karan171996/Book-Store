@@ -14,7 +14,13 @@ const getProductDetail = (req, res, next) => {
   });
 };
 
+const postCart = (req, res, next) => {
+  const selectedProduct = req.body;
+  console.log(selectedProduct);
+};
+
 module.exports = {
   getProducts,
   getProductDetail,
+  postCart,
 };

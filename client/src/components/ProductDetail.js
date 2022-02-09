@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { useFetchProductDetail } from "../api/useFetchProductDetail";
+import { postCartDetails } from "../api/postCartdetails";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState({});
-  const [productDetail, loading] = useFetchProductDetail("123");
-  console.log("productDetail", productDetail);
+  let urlParams = useParams();
+  let navigate = useNavigate();
+
+  const [productDetail, loading] = useFetchProductDetail(urlParams?.productId);
   useEffect(() => {
     setProduct(productDetail);
   }, [productDetail]);
+
+  const addToCartHandler = () => {
+    const response = postCartDetails(product?.id);
+    if (response) {
+      navigate("/cart");
+    }
+  };
   return (
     <div className="productDetail-container">
       <h1>{product?.title}</h1>
@@ -18,7 +30,7 @@ const ProductDetail = () => {
       </div>
       <h2>🇮🇳 {product?.price}</h2>
       <p>{product?.description}</p>
-      <button>Add To Cart</button>
+      <button onClick={addToCartHandler}>Add To Cart</button>
     </div>
   );
 };

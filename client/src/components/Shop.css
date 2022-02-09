@@ -3,14 +3,13 @@
 }
 .card-container {
     display:flex;
-    gap:20px;
+    gap:70px;
 }
 .card {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 350px;
-    height:400px;
     box-shadow: 5px 10px 30px #a8a7a7;
 }
 .book-image {
@@ -18,7 +17,14 @@
     width:400px;
     height:200px;
 }
+.description, .price {
+    text-align: center;
+}
 .button-section {
     display:flex;
     gap:20px;
+    justify-content: center;
+}
+.description-section {
+    padding: 20px;
 }
