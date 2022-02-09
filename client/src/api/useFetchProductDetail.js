@@ -9,7 +9,7 @@ export const useFetchProductDetail = (id = "") => {
     if (id) {
       setLoading(true);
       axios.get(`/api/shops/products/${id}`).then((res) => {
-        setProductDetail(res?.data?.products || {});
+        setProductDetail(res?.data?.product || {});
         setLoading(false);
       });
     }

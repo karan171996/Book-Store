@@ -6,6 +6,15 @@ const getProducts = (req, res, next) => {
   });
 };
 
+const getProductDetail = (req, res, next) => {
+  const productId = req.params.productId;
+  Product.fetchAll((val) => {
+    const product = val.find((item) => item.id === productId) || {};
+    res.status(200).send({ product });
+  });
+};
+
 module.exports = {
   getProducts,
+  getProductDetail,
 };

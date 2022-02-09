@@ -7,6 +7,8 @@ router.get("/", shopController.getProducts);
 
 router.get("/products");
 
+router.get("/products/:productId", shopController.getProductDetail);
+
 router.get("/cart");
 
 router.get("/checkout");

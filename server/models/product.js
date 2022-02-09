@@ -15,10 +15,11 @@ module.exports = class Product {
   }
 
   save() {
+    this.id = Math.random().toString();
     fs.readFile(p, (err, data) => {
       let products = [];
       if (!err) {
-        // This for the check fle created we need to create new entry
+        // This for the check file created we need to create new entry
         products = [...JSON.parse(data)];
         products.push(this);
         fs.writeFile(p, JSON.stringify(products), (err) => {
