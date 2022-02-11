@@ -42,7 +42,17 @@ module.exports = class Product {
       }
     });
   }
-  // it is called not on instantial object, It will be called from Product object itself
+  static findById(id, cb) {
+    fs.readFile(p, (err, data) => {
+      if (err) {
+        cb([]);
+      } else {
+        const product = JSON.parse(data).find((item) => item.id === id);
+        cb(product);
+      }
+    });
+  }
+  // it is called not on initial object, It will be called from Product object itself
   static fetchAll(cb) {
     fs.readFile(p, (err, data) => {
       if (err) {
