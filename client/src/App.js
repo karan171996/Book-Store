@@ -19,7 +19,10 @@ function App() {
           <Route path="products" element={<Products />} />
           <Route path="products/:productId" element={<ProductDetail />} />
           <Route path="add-product" element={<AddProduct />} />
-          <Route path="admin/products" element={<AdminProduct />} />
+          <Route path="admin/">
+            <Route path="products" element={<AdminProduct />} />
+            <Route path="edit-product/:productId" element={<AddProduct />} />
+          </Route>
           <Route path="cart" element={<Cart />} />
           <Route index element={<Shop />} />
           <Route path="*" element={<NotFoundPage />} />

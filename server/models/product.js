@@ -7,7 +7,8 @@ const p = path.join(
   "products.json"
 );
 module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
+  constructor(id, title, imageUrl, description, price) {
+    this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -15,20 +16,34 @@ module.exports = class Product {
   }
 
   save() {
-    this.id = Math.random().toString();
     fs.readFile(p, (err, data) => {
       let products = [];
       if (!err) {
         // This for the check file created we need to create new entry
         products = [...JSON.parse(data)];
-        products.push(this);
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("File writen!!!");
-          }
-        });
+        if (this.id) {
+          let existingProduct = products.findIndex(
+            (item) => item.id === this.id
+          );
+          products[existingProduct] = this;
+          fs.writeFile(p, JSON.stringify(products), (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("File writen!!!");
+            }
+          });
+        } else {
+          this.id = Math.random().toString();
+          products.push(this);
+          fs.writeFile(p, JSON.stringify(products), (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("File writen!!!");
+            }
+          });
+        }
       } else {
         // This for checking file not created
         products.push(this);
