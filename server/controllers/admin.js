@@ -28,8 +28,14 @@ const postEditProduct = (req, res, next) => {
   res.status(200).send({ response: "success" });
 };
 
+const postDeleteProduct = (req, res) => {
+  const producId = req.body.productId;
+  Product.deleteById(producId);
+  res.status(200).send({ response: "success" });
+};
 module.exports = {
   postAddProduct,
   getEditProduct,
   postEditProduct,
+  postDeleteProduct,
 };

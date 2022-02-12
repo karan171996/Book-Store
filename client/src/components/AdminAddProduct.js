@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import "./Shop.css";
@@ -16,6 +17,16 @@ const Shop = () => {
       setProduct(products);
     }
   }, [products, loading]);
+
+  const deleteProductHandler = async (id) => {
+    await axios
+      .post("/api/admin/delete-product", { productId: id })
+      .then((res) => {
+        if (res?.status === 200) {
+          navigate("/admin/products");
+        }
+      });
+  };
 
   return (
     <div className="shop-container">
@@ -35,7 +46,9 @@ const Shop = () => {
                 >
                   Edit
                 </button>
-                <button>Delete</button>
+                <button onClick={() => deleteProductHandler(item.id)}>
+                  Delete
+                </button>
               </div>
             </div>
           </div>
