@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const postCartDetails = (id) => {
   return axios
-    .post("/api/shops/cart", {
+    .post("/api/shops/cart-delete-item", {
       productId: id,
     })
     .then((res) => {

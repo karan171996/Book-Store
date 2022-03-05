@@ -33,9 +33,16 @@ const postDeleteProduct = (req, res) => {
   Product.deleteById(producId);
   res.status(200).send({ response: "success" });
 };
+
+const getProducts = (req, res) => {
+  Product.fetchAll((products) => {
+    res.status(200).send({ products });
+  });
+};
 module.exports = {
   postAddProduct,
   getEditProduct,
   postEditProduct,
   postDeleteProduct,
+  getProducts,
 };
