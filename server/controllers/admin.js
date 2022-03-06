@@ -6,8 +6,12 @@ const postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const imageUrl = req.body.image;
   const product = new Product(null, title, imageUrl, description, price);
-  product.save();
-  res.status(200).send({ response: "success" });
+  product
+    .save()
+    .then(() => {
+      res.status(200).send({ response: "success" });
+    })
+    .catch((err) => console.log("err", err));
 };
 
 const getEditProduct = (req, res, next) => {

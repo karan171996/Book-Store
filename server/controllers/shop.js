@@ -2,17 +2,20 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 const getProducts = (req, res, next) => {
-  Product.fetchAll((val) => {
-    res.status(200).send({ products: val });
-  });
+  Product.fetchAll()
+    .then(([row, fieldData]) => {
+      res.status(200).send({ products: row });
+    })
+    .catch((err) => console.log("err", err));
 };
 
 const getProductDetail = (req, res, next) => {
   const productId = req.params.productId;
-  Product.fetchAll((val) => {
-    const product = val.find((item) => item.id === productId) || {};
-    res.status(200).send({ product });
-  });
+  Product.findById(productId)
+    .then(([product]) => {
+      res.status(200).send({ product: product[0] });
+    })
+    .catch((err) => console.log("err", err));
 };
 
 const postCart = (req, res, next) => {
