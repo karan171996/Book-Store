@@ -5,13 +5,16 @@ const postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   const imageUrl = req.body.image;
-  req.user
-    .createProduct({
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
-      description: description,
-    })
+  const product = new Product(
+    title,
+    price,
+    description,
+    imageUrl,
+    null,
+    req.user._id
+  );
+  product
+    .save()
     .then((result) => {
       res.status(200).send({ response: "success" });
     })
@@ -20,10 +23,8 @@ const postAddProduct = (req, res, next) => {
 
 const getEditProduct = (req, res, next) => {
   let productId = req.params.productId;
-  req.user
-    .getProducts({ where: { id: productId } })
-    .then((products) => {
-      const product = products[0];
+  Product.findById(productId)
+    .then((product) => {
       res.status(200).send({ product });
     })
     .catch((err) => console.log("error"));
@@ -35,14 +36,15 @@ const postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedDescription = req.body.description;
   const updatedImageUrl = req.body.image;
-  Product.findByPk(productId)
-    .then((product) => {
-      product.title = updatedTitle;
-      product.price = updatedPrice;
-      product.description = updatedDescription;
-      product.imageUrl = updatedImageUrl;
-      return product.save();
-    })
+  let product = new Product(
+    updatedTitle,
+    updatedPrice,
+    updatedDescription,
+    updatedImageUrl,
+    productId
+  );
+  return product
+    .save()
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -51,8 +53,7 @@ const postEditProduct = (req, res, next) => {
 
 const postDeleteProduct = (req, res) => {
   const producId = req.body.productId;
-  Product.findByPk(producId)
-    .then((product) => product.destroy())
+  Product.deleteById(producId)
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -60,7 +61,7 @@ const postDeleteProduct = (req, res) => {
 };
 
 const getProducts = (req, res) => {
-  req.user.getProducts((products) => {
+  Product.fetchAll().then((products) => {
     res.status(200).send({ products });
   });
 };

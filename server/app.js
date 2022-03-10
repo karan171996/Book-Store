@@ -2,30 +2,31 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const mongoConnect = require("./util/database");
-// const adminRoutes = require("./routes/admin");
-// const shopRoutes = require("./routes/shop");
+
+const mongoConnect = require("./util/database").mongoConnect;
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const User = require("./models/user");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json()); // Important to fetch the json while sending through form
 
 app.use((req, res, next) => {
-  // User.findByPk(1)
-  //   .then((user) => {
-  //     req.user = user; // here user is sequelize object
-  //     next();
-  //   })
-  //   .catch((err) => {
-  //     console.log("err");
-  //   });
+  User.findById("622a3959937a0623d812807c")
+    .then((user) => {
+      req.user = user; // here user is sequelize object
+      next();
+    })
+    .catch((err) => {
+      console.log("err");
+    });
 });
 
-// app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
-// app.use("/api/shops", shopRoutes);
+app.use("/api/shops", shopRoutes);
 
-mongoConnect((client) => {
-  console.log("client", client);
+mongoConnect(() => {
   app.listen(6000);
 });
