@@ -23,37 +23,41 @@ const Shop = () => {
       .post("/api/admin/delete-product", { productId: id })
       .then((res) => {
         if (res?.status === 200) {
-          navigate("/admin/products");
+          window.location.reload();
         }
       });
   };
 
   return (
     <div className="shop-container">
-      <div className="card-container">
-        {product.map((item, index) => (
-          <div className="card" key={index}>
-            <h3>{item?.title}</h3>
-            <img className="book-image" src={item.imageUrl} alt="book" />
-            <div className="description-section">
-              <p className="description">{item?.description}</p>
-              <p className="price">{item?.price}</p>
-              <div className="button-section">
-                <button
-                  onClick={() =>
-                    navigate(`/admin/edit-product/${item.id}?edit=true`)
-                  }
-                >
-                  Edit
-                </button>
-                <button onClick={() => deleteProductHandler(item.id)}>
-                  Delete
-                </button>
+      {product.length > 0 ? (
+        <div className="card-container">
+          {product.map((item, index) => (
+            <div className="card" key={index}>
+              <h3>{item?.title}</h3>
+              <img className="book-image" src={item.imageUrl} alt="book" />
+              <div className="description-section">
+                <p className="description">{item?.description}</p>
+                <p className="price">{item?.price}</p>
+                <div className="button-section">
+                  <button
+                    onClick={() =>
+                      navigate(`/admin/edit-product/${item._id}?edit=true`)
+                    }
+                  >
+                    Edit
+                  </button>
+                  <button onClick={() => deleteProductHandler(item._id)}>
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <h2> No item Found!!</h2>
+      )}
     </div>
   );
 };

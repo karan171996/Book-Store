@@ -38,7 +38,7 @@ const Products = () => {
               <div className="button-section">
                 <button
                   onClick={() =>
-                    navigate(`/products/${item.id}`, { replace: true })
+                    navigate(`/products/${item._id}`, { replace: true })
                   }
                 >
                   Details

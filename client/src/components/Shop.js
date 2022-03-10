@@ -35,7 +35,13 @@ const Shop = () => {
               <p className="description">{item?.description}</p>
               <p className="price">{item?.price}</p>
               <div className="button-section">
-                <button>Details</button>
+                <button
+                  onClick={() =>
+                    navigate(`/products/${item._id}`, { replace: true })
+                  }
+                >
+                  Details
+                </button>
                 <button onClick={() => addToCartHandler(item?.id)}>
                   Add to Cart
                 </button>
