@@ -1,8 +1,8 @@
 const Product = require("../models/product");
-// const Cart = require("../models/cart");
+const Order = require("../models/order");
 
 const getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       console.log("products shop controller", products);
       res.status(200).send({ products });
@@ -33,8 +33,9 @@ const postCart = (req, res, next) => {
 
 const getCart = (req, res, next) => {
   req.user
-    .getCart()
-    .then((products) => {
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items;
       res.status(200).send({ cart: products });
     })
     .catch((err) => console.log("Unable to getCart", err));
@@ -43,7 +44,7 @@ const getCart = (req, res, next) => {
 const postCartDeleteProduct = (req, res) => {
   const prodId = req.body.productId;
   req.user
-    .deleteItemFromCart(prodId)
+    .removeFromCart(prodId)
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -52,7 +53,27 @@ const postCartDeleteProduct = (req, res) => {
 
 const postOrder = (req, res, next) => {
   req.user
-    .addOrder()
+    .populate("cart.items.productId")
+    .then((user) => {
+      const products = user.cart.items.map((i) => {
+        console.log("i", i);
+        return {
+          qty: i.qty,
+          product: { ...i.productId },
+        };
+      });
+      const order = new Order({
+        user: {
+          name: req.user.name,
+          userId: req.user,
+        },
+        products: products,
+      });
+      return order.save();
+    })
+    .then(() => {
+      return req.user.clearCart();
+    })
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -60,8 +81,7 @@ const postOrder = (req, res, next) => {
 };
 
 const getOrders = (req, res, next) => {
-  req.user
-    .getOrder()
+  Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.status(200).send({ orders });
     })

@@ -5,14 +5,13 @@ const postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   const imageUrl = req.body.image;
-  const product = new Product(
-    title,
-    price,
-    description,
-    imageUrl,
-    null,
-    req.user._id
-  );
+  const product = new Product({
+    title: title,
+    description: description,
+    price: price,
+    imageUrl: imageUrl,
+    userId: req.user,
+  });
   product
     .save()
     .then((result) => {
@@ -36,15 +35,14 @@ const postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedDescription = req.body.description;
   const updatedImageUrl = req.body.image;
-  let product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDescription,
-    updatedImageUrl,
-    productId
-  );
-  return product
-    .save()
+  Product.findById(productId)
+    .then((product) => {
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDescription;
+      product.imageUrl = updatedImageUrl;
+      return product.save();
+    })
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -53,7 +51,7 @@ const postEditProduct = (req, res, next) => {
 
 const postDeleteProduct = (req, res) => {
   const producId = req.body.productId;
-  Product.deleteById(producId)
+  Product.findByIdAndRemove(producId)
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -61,7 +59,7 @@ const postDeleteProduct = (req, res) => {
 };
 
 const getProducts = (req, res) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.status(200).send({ products });
     })

@@ -19,10 +19,9 @@ const Products = () => {
   }, [products, loading]);
 
   const addToCartHandler = (id) => {
-    const response = postCartDetails(id);
-    if (response) {
+    postCartDetails(id).then(() => {
       navigate("/cart");
-    }
+    });
   };
 
   return (

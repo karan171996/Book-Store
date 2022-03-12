@@ -11,9 +11,9 @@ const Orders = () => {
             <div className="order-detail">
               <b>Order - # {item._id}</b>
             </div>
-            {item.items.map((product, index) => (
+            {item.products.map((p, index) => (
               <div key={index} className="product-list">
-                {product.title} ({product.qty})
+                {p.product.title} ({p.qty})
               </div>
             ))}
           </div>
