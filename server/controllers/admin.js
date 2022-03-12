@@ -18,7 +18,7 @@ const postAddProduct = (req, res, next) => {
     .then((result) => {
       res.status(200).send({ response: "success" });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("unable to add Product", err));
 };
 
 const getEditProduct = (req, res, next) => {
@@ -27,7 +27,7 @@ const getEditProduct = (req, res, next) => {
     .then((product) => {
       res.status(200).send({ product });
     })
-    .catch((err) => console.log("error"));
+    .catch((err) => console.log("Unable to fetch the product for edit", err));
 };
 
 const postEditProduct = (req, res, next) => {
@@ -48,7 +48,7 @@ const postEditProduct = (req, res, next) => {
     .then(() => {
       res.status(200).send({ response: "success" });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("unable to Edit Product", err));
 };
 
 const postDeleteProduct = (req, res) => {
@@ -57,13 +57,15 @@ const postDeleteProduct = (req, res) => {
     .then(() => {
       res.status(200).send({ response: "success" });
     })
-    .catch((err) => console.log("err", err));
+    .catch((err) => console.log("Unable to delete Product", err));
 };
 
 const getProducts = (req, res) => {
-  Product.fetchAll().then((products) => {
-    res.status(200).send({ products });
-  });
+  Product.fetchAll()
+    .then((products) => {
+      res.status(200).send({ products });
+    })
+    .catch((err) => console.log("Unable to get Admin Prducts", err));
 };
 module.exports = {
   postAddProduct,

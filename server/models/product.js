@@ -23,7 +23,7 @@ class Product {
     }
     return dbOp
       .then(() => console.log("save function called"))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("unable to save Product", err));
   }
 
   static fetchAll() {
@@ -36,7 +36,7 @@ class Product {
         console.log("products", products);
         return products;
       })
-      .catch((err) => console.log("err", err));
+      .catch((err) => console.log("Unable to fetch Product All", err));
   }
 
   static findById(productId) {
@@ -46,10 +46,9 @@ class Product {
       .find({ _id: new mongodb.ObjectId(productId) })
       .next()
       .then((product) => {
-        console.log("product", product);
         return product;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Unable to find product by Id", err));
   }
 
   static deleteById(prodId) {
@@ -59,7 +58,7 @@ class Product {
       .deleteOne({ _id: new mongodb.ObjectId(prodId) })
       .then(() => console.log("Deleted"))
       .catch((err) => {
-        console.log(err);
+        console.log("product delete error", err);
       });
   }
 }

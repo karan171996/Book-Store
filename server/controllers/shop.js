@@ -7,7 +7,7 @@ const getProducts = (req, res, next) => {
       console.log("products shop controller", products);
       res.status(200).send({ products });
     })
-    .catch((err) => console.log("err", err));
+    .catch((err) => console.log("Unable to get Products", err));
 };
 
 const getProductDetail = (req, res, next) => {
@@ -16,69 +16,64 @@ const getProductDetail = (req, res, next) => {
     .then((product) => {
       res.status(200).send({ product });
     })
-    .catch((err) => console.log("err", err));
+    .catch((err) => console.log("Product Detail error", err));
 };
 
-// const postCart = (req, res, next) => {
-//   const selectedProductId = req.body.productId;
-//   Product.findById(selectedProductId, (product) => {
-//     Cart.addProduct(selectedProductId, product.price);
-//     res.status(200).send({ response: "Added into cart" });
-//   });
-// };
+const postCart = (req, res, next) => {
+  const selectedProductId = req.body.productId;
+  Product.findById(selectedProductId)
+    .then((product) => {
+      return req.user.addToCart(product);
+    })
+    .then(() => {
+      res.status(200).send({ response: "Added into cart" });
+    })
+    .catch((err) => console.log("post cart error", err));
+};
 
-// const getCart = (req, res, next) => {
-//   req.user
-//     .getCart()
-//     .then((cart) => {
-//       return cart
-//         .getProducts()
-//         .then((cartProducts) => {
-//           res.status(200).send({ cart: cartProducts });
-//         })
-//         .catch((err) => {
-//           console.log("err", err);
-//         });
-//     })
-//     .catch((err) => console.log("err", err));
-// };
+const getCart = (req, res, next) => {
+  req.user
+    .getCart()
+    .then((products) => {
+      res.status(200).send({ cart: products });
+    })
+    .catch((err) => console.log("Unable to getCart", err));
+};
 
-// const postCartDeleteProduct = (req, res) => {
-//   const prodId = req.body.productId;
-//   let fetchedCart;
-//   req.user
-//     .getCart()
-//     .then((cart) => {
-//       fetchedCart = cart;
-//       return cart.getProducts({ where: { id: prodId } });
-//     })
-//     .then((products) => {
-//       let product;
-//       if (products.length > 0) {
-//         product = products[0];
-//       }
-//       let newQuantity = 1;
-//       if (product) {
-//         // Somrthing we need to think
-//       }
-//       return Product.findByPk(prodId)
-//         .then((product) => {
-//           return fetchedCart.addProduct(product, {
-//             through: { quantity: newQuantity },
-//           });
-//         })
-//         .catch((err) => console.log(err));
-//     })
-//     .then(() => {
-//       res.status(200).send({ response: "success" });
-//     })
-//     .catch((err) => console.log(err));
-// };
+const postCartDeleteProduct = (req, res) => {
+  const prodId = req.body.productId;
+  req.user
+    .deleteItemFromCart(prodId)
+    .then(() => {
+      res.status(200).send({ response: "success" });
+    })
+    .catch((err) => console.log("Unable to delete Cart Product", err));
+};
+
+const postOrder = (req, res, next) => {
+  req.user
+    .addOrder()
+    .then(() => {
+      res.status(200).send({ response: "success" });
+    })
+    .catch((err) => console.log("Unable to Post Order", err));
+};
+
+const getOrders = (req, res, next) => {
+  req.user
+    .getOrder()
+    .then((orders) => {
+      res.status(200).send({ orders });
+    })
+    .catch((err) => console.log("Get Order orders", err));
+};
 
 module.exports = {
   getProducts,
   getProductDetail,
-  // postCart,
-  // getCart,
-  // postCartDeleteProduct,
+  postCart,
+  getCart,
+  postCartDeleteProduct,
+  postOrder,
+  getOrders,
 };

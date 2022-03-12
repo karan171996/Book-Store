@@ -15,7 +15,7 @@ app.use(bodyParser.json()); // Important to fetch the json while sending through
 app.use((req, res, next) => {
   User.findById("622a3959937a0623d812807c")
     .then((user) => {
-      req.user = user; // here user is sequelize object
+      req.user = new User(user.name, user.email, user.cart, user._id); // here user is sequelize object
       next();
     })
     .catch((err) => {
