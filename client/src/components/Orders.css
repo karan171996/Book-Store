@@ -1,0 +1,21 @@
+.order-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-list{
+    display:flex;
+    justify-content: start;
+    flex-direction: column;
+    padding: 30px;
+    box-shadow: 5px 10px 30px #a8a7a7; 
+}
+
+.product-list {
+    margin-top:10px;
+    border: 1px solid brown;
+    width:100%;
+    padding:5px;
+    color: brown;
+    font-weight: bold;
+}

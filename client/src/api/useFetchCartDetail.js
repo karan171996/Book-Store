@@ -8,7 +8,6 @@ export const useFetchCartdetails = () => {
   useEffect(() => {
     setLoading(true);
     axios.get("/api/shops/cart").then((res) => {
-      console.log("res", res?.data);
       setCartData(res?.data);
       setLoading(false);
     });

@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useFetchCartdetails } from "../api/useFetchCartDetail";
 import { postCartDetails } from "../api/postDeleteCartItem";
+import { postOrder } from "../api/postOrder";
+
+import "./Cart.css";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [cartData, loading] = useFetchCartdetails();
+
   useEffect(() => {
-    console.log("cartData", cartData);
     setCart(cartData?.cart ?? []);
   }, [cartData]);
 
@@ -14,19 +17,34 @@ const Cart = () => {
     postCartDetails(id);
   };
 
+  const orderHandler = () => {
+    postOrder();
+  };
+
   return (
-    <div>
+    <div classname="cart-container">
       {cart.length > 0 ? (
-        cart.map((item, index) => (
-          <li key={index}>
-            <p>
-              {item?.productsData?.title}({item?.qty})
-            </p>
-            <button onClick={() => deleteHandler(item?.productsData?.id)}>
-              Delete
-            </button>
-          </li>
-        ))
+        <div className="cart-items-container">
+          {cart.map((item, index) => (
+            <div className="single-item" key={index}>
+              <div>
+                <b>
+                  <span>Title :</span>
+                  <span>{item?.title}</span>
+                </b>
+              </div>
+              <div>
+                <b>
+                  <span>Quantity :</span>
+                  <span>{item?.qty}</span>
+                </b>
+              </div>
+              <button onClick={() => deleteHandler(item?._id)}>Delete</button>
+            </div>
+          ))}
+          <hr style={{ width: "100%" }} />
+          <button onClick={orderHandler}>Order Now!</button>
+        </div>
       ) : (
         <h2>No item present inside Cart!!!</h2>
       )}

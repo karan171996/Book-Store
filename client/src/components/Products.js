@@ -43,7 +43,7 @@ const Products = () => {
                 >
                   Details
                 </button>
-                <button onClick={() => addToCartHandler(item?.id)}>
+                <button onClick={() => addToCartHandler(item?._id)}>
                   Add to Cart
                 </button>
               </div>
