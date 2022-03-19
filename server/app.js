@@ -33,10 +33,12 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  User.findById("622ca4a49c8880ba6276e4f1")
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then((user) => {
-      req.session.user = user;
-      res.status(200).send({ response: "login" });
+      req.user = user;
       next();
     })
     .catch((err) => {

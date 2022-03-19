@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAuthCookie } from "../reducers/cookieReducer";
 
 import { useFetchProductDetail } from "../api/useFetchProductDetail";
 import { postCartDetails } from "../api/postCartdetails";
@@ -9,6 +11,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({});
   let urlParams = useParams();
   let navigate = useNavigate();
+  const pageActive = useSelector(selectAuthCookie);
 
   const [productDetail, loading] = useFetchProductDetail(urlParams?.productId);
   useEffect(() => {
@@ -30,7 +33,7 @@ const ProductDetail = () => {
       </div>
       <h2>🇮🇳 {product?.price}</h2>
       <p>{product?.description}</p>
-      <button onClick={addToCartHandler}>Add To Cart</button>
+      {pageActive && <button onClick={addToCartHandler}>Add To Cart</button>}
     </div>
   );
 };

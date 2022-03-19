@@ -11,7 +11,9 @@ const postLogin = (req, res, next) => {
     .then((user) => {
       req.session.isLoggedIn = true;
       req.session.user = user;
-      res.status(200).send({ response: "login" });
+      req.session.save(() => {
+        res.status(200).send({ response: "login" });
+      });
     })
     .catch((err) => {
       console.log("err");
