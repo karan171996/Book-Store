@@ -5,7 +5,7 @@
 
 .order-list{
     display:flex;
-    justify-content: start;
+    justify-content: flex-start;
     flex-direction: column;
     padding: 30px;
     box-shadow: 5px 10px 30px #a8a7a7; 

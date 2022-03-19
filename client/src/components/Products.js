@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAuthCookie } from "../reducers/cookieReducer";
 
 import "./Shop.css";
 
@@ -10,8 +12,9 @@ import { useFetchProducts } from "../api/useFetchProducts";
 const Products = () => {
   const [product, setProduct] = useState([]);
   const [products, loading] = useFetchProducts();
-
+  const pageActive = useSelector(selectAuthCookie);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!loading && products.length) {
       setProduct(products);
@@ -42,9 +45,11 @@ const Products = () => {
                 >
                   Details
                 </button>
-                <button onClick={() => addToCartHandler(item?._id)}>
-                  Add to Cart
-                </button>
+                {pageActive && (
+                  <button onClick={() => addToCartHandler(item?._id)}>
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           </div>

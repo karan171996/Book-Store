@@ -69,7 +69,7 @@ const AddProduct = () => {
     <div>
       <form className="product-form" onSubmit={onSubmitHandler}>
         <div className="form-control">
-          <label for="title">Title</label>
+          <label htmlFor="title">Title</label>
           <input
             id="title"
             type="text"
@@ -79,7 +79,7 @@ const AddProduct = () => {
           />
         </div>
         <div className="form-control">
-          <label for="image">Image Url</label>
+          <label htmlFor="image">Image Url</label>
           <input
             id="image"
             type="text"
@@ -89,7 +89,7 @@ const AddProduct = () => {
           />
         </div>
         <div className="form-control">
-          <label for="description">Description</label>
+          <label htmlFor="description">Description</label>
           <textarea
             id="description"
             type="text"
@@ -102,7 +102,7 @@ const AddProduct = () => {
         </div>
 
         <div className="form-control">
-          <label for="price">Price</label>
+          <label htmlFor="price">Price</label>
           <input
             id="price"
             type="number"

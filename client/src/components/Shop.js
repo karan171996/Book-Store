@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Shop.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAuthCookie } from "../reducers/cookieReducer";
 
 //api
 import { postCartDetails } from "../api/postCartdetails";
@@ -9,6 +11,11 @@ import { useFetchProducts } from "../api/useFetchProducts";
 const Shop = () => {
   const [product, setProduct] = useState([]);
   const [products, loading] = useFetchProducts();
+  const pageActive = useSelector(selectAuthCookie);
+
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, [pageActive]);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -42,9 +49,11 @@ const Shop = () => {
                 >
                   Details
                 </button>
-                <button onClick={() => addToCartHandler(item?._id)}>
-                  Add to Cart
-                </button>
+                {pageActive && (
+                  <button onClick={() => addToCartHandler(item?._id)}>
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           </div>
