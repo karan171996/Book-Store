@@ -56,17 +56,27 @@ export function OuterLayout() {
         </ul>
         <ul className="main-header__item-list">
           {!pageActive && (
+            <>
+              <li className="main-header__item">
+                <NavLink style={activeStyle} to="/login">
+                  Login
+                </NavLink>
+              </li>
+              <li className="main-header__item">
+                <NavLink style={activeStyle} to="/signup">
+                  Signup
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {pageActive && (
             <li className="main-header__item">
-              <NavLink style={activeStyle} to="/login">
-                Login
+              <NavLink style={activeStyle} to="/logout">
+                Logout
               </NavLink>
             </li>
           )}
-          <li className="main-header__item">
-            <NavLink style={activeStyle} to="/logout">
-              Logout
-            </NavLink>
-          </li>
         </ul>
       </nav>
       <main>

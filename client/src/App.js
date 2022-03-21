@@ -10,6 +10,7 @@ import { OuterLayout } from "./OuterLayout";
 import Cart from "./components/Cart";
 import Orders from "./components/Orders";
 import Login from "./components/Login";
+import { SignUp } from "./components/Signup";
 
 import NotFoundPage from "./components/NotFoundPage";
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="orders" element={<Orders />} />
           <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
           <Route index element={<Shop />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

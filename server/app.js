@@ -55,17 +55,6 @@ app.use("/api/auth", authRoutes);
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log("Connected!!!");
-    User.findOne().then((user) => {
-      if (!user) {
-        const user = new User({
-          name: "Karan",
-          email: "random@gmail.com",
-          cart: { items: [] },
-        });
-        user.save();
-      }
-    });
     app.listen(6000);
   })
   .catch((err) => console.log("Mongo Connection err", err));

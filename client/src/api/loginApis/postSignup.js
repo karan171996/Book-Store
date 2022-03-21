@@ -1,19 +1,20 @@
 import axios from "axios";
 
-export const postLogin = (payload) => {
+export const postSignup = (payload) => {
+  console.log("payload", payload);
   return axios
-    .post("/api/auth/login", {
+    .post("/api/auth/signup", {
       ...payload,
     })
     .then((res) => {
       if (res.status === 200) {
         return true;
-      } else {
+      } else if (res.status === 404) {
         return false;
       }
     })
     .catch((err) => {
-      console.log("Login Error", err);
+      console.log("err", err);
       return false;
     });
 };

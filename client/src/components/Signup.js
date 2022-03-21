@@ -1,30 +1,30 @@
-import { useState } from "react";
-import { postLogin } from "../../api/loginApis/postLogin";
+import { useState, useRef } from "react";
+import { postSignup } from "../api/loginApis/postSignup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setAuthCookie } from "../../reducers/cookieReducer";
 
-const Login = () => {
+export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const confirmPassword = useRef("");
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    postLogin({
+    console.log("confirmPassword", confirmPassword?.current?.value);
+    postSignup({
       email,
       password,
+      ...(confirmPassword?.current?.value && {
+        confirmPassword: confirmPassword.current,
+      }),
     })
       .then((result) => {
         if (result) {
-          dispatch(setAuthCookie(true));
-          navigate("/");
+          navigate("/login");
         }
       })
-      .catch((err) => {
-        console.log("Login error", err);
-      });
+      .catch((err) => console.log("err", err));
   };
   return (
     <div>
@@ -49,10 +49,20 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <div className="form-control">
+          <label htmlFor="password">Confirm Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            ref={confirmPassword}
+            onChange={(e) => {
+              confirmPassword.current = e.target.value;
+            }}
+          />
+        </div>
+        <button type="submit">Signup</button>
       </form>
     </div>
   );
 };
-
-export default Login;
