@@ -11,10 +11,13 @@ import Cart from "./components/Cart";
 import Orders from "./components/Orders";
 import Login from "./components/Login";
 import { SignUp } from "./components/Signup";
-
+import { Reset } from "./components/Reset";
 import NotFoundPage from "./components/NotFoundPage";
 
+import { useFetchCSRFToken } from "./api/loginApis/useFetchCSRFToken";
+
 function App() {
+  useFetchCSRFToken();
   return (
     <BrowserRouter>
       <Routes>
@@ -29,6 +32,7 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="orders" element={<Orders />} />
           <Route path="login" element={<Login />} />
+          <Route path="reset-password" element={<Reset />} />
           <Route path="signup" element={<SignUp />} />
           <Route index element={<Shop />} />
           <Route path="*" element={<NotFoundPage />} />

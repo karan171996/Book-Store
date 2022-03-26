@@ -4,17 +4,21 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-
+const csrf = require("csurf");
 const app = express();
 dotenv.config();
 
 const MONGODB_URI = `mongodb+srv://karan171996:${encodeURIComponent(
   process.env.MONGODB_PASSWORD
 )}@cluster0.ilaku.mongodb.net/shop?retryWrites=true&w=majority`;
+
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions",
 });
+
+const csrfProtection = csrf();
+
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
@@ -32,6 +36,8 @@ app.use(
   })
 );
 
+app.use(csrfProtection);
+
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -44,6 +50,12 @@ app.use((req, res, next) => {
     .catch((err) => {
       console.log("err");
     });
+});
+
+app.get("/api/getCSRFToken", (req, res, next) => {
+  req.session.isLoggedIn = true;
+  res.json({ CSRFToken: req.csrfToken() });
+  next();
 });
 
 app.use("/api/admin", adminRoutes);

@@ -1,9 +1,17 @@
-const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs"); // We used to store the password in database in hash format.
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+
 const User = require("../models/user");
 
-const getLogin = (req, res, next) => {
-  //   res.status(200).send({ response: "login" });
-};
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: process.env.SENDGRID_API_KEY,
+    },
+  })
+);
 
 const postLogin = (req, res, next) => {
   // res.setHeader("Set-Cookie", "loggedIn=true; HttpOnly");
@@ -62,9 +70,18 @@ const postSignup = (req, res, next) => {
           });
           return user.save();
         })
+        .then(() => {
+          return transporter.sendMail({
+            to: email,
+            from: "krnsngh38@gmail.com",
+            subject: "Signup Sucessfully",
+            html: "<h1>Signup Sucessfully</>",
+          });
+        })
         .then((result) => {
           res.status(200).send({ response: result });
-        });
+        })
+        .catch((err) => console.log("SendInBlue error", err));
     })
     .catch((err) => {
       // res.status(500).send({ response: err });
@@ -72,9 +89,48 @@ const postSignup = (req, res, next) => {
     });
 };
 
+const postResetPassword = (req, res, next) => {
+  crypto.randomBytes(32, (err, buffer) => {
+    if (!err) {
+      res.status(400).send({ response: "Unable to generate password" });
+    }
+    const token = buffer.toString("hex");
+    User.findOne({ email: req.body.email })
+      .then((user) => {
+        if (!user) {
+          res
+            .status(500)
+            .response({ response: "No account with email found !!!" });
+        }
+        user.resetToken = token;
+        user.resetTokenExpiration = Date.now() + 3600000;
+        return user.save();
+      })
+      .then(() => {
+        return transporter.sendMail({
+          to: req.body.email,
+          from: "krnsngh38@gmail.com",
+          subject: "Reset Password Link",
+          html: `
+        <p> You Requested Password reset</p>
+        <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set Password </p>
+        `,
+        });
+      })
+      .then(() => {
+        res.status(200).response({
+          response: "Password link sent successfully to email!!!",
+        });
+      })
+      .catch((err) => {
+        console.log("Reset Password Error", err);
+      });
+  });
+};
+
 module.exports = {
-  getLogin,
   postLogin,
   postLogout,
   postSignup,
+  postResetPassword,
 };

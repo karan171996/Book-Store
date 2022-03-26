@@ -26,6 +26,10 @@ const Login = () => {
         console.log("Login error", err);
       });
   };
+
+  const resetPassword = () => {
+    navigate("/reset-password");
+  };
   return (
     <div>
       <form className="product-form" onSubmit={onSubmitHandler}>
@@ -49,7 +53,10 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button type="submit">Login</button>
+          <button onClick={resetPassword}>Reset-Password</button>
+        </div>
       </form>
     </div>
   );
