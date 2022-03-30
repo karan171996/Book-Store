@@ -1,17 +1,25 @@
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs"); // We used to store the password in database in hash format.
 const nodemailer = require("nodemailer");
-const sendgridTransport = require("nodemailer-sendgrid-transport");
+// const sendgridTransport = require("nodemailer-sendgrid-transport");
 
 const User = require("../models/user");
 
-const transporter = nodemailer.createTransport(
-  sendgridTransport({
-    auth: {
-      api_key: process.env.SENDGRID_API_KEY,
-    },
-  })
-);
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_EMAIL,
+    pass: process.env.GMAIL_PASSWORD,
+  },
+});
+
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("Server is ready to take our messages");
+  }
+});
 
 const postLogin = (req, res, next) => {
   // res.setHeader("Set-Cookie", "loggedIn=true; HttpOnly");
@@ -91,7 +99,7 @@ const postSignup = (req, res, next) => {
 
 const postResetPassword = (req, res, next) => {
   crypto.randomBytes(32, (err, buffer) => {
-    if (!err) {
+    if (err) {
       res.status(400).send({ response: "Unable to generate password" });
     }
     const token = buffer.toString("hex");
@@ -109,7 +117,7 @@ const postResetPassword = (req, res, next) => {
       .then(() => {
         return transporter.sendMail({
           to: req.body.email,
-          from: "krnsngh38@gmail.com",
+          from: "node-shop@dummy.com",
           subject: "Reset Password Link",
           html: `
         <p> You Requested Password reset</p>
@@ -118,7 +126,7 @@ const postResetPassword = (req, res, next) => {
         });
       })
       .then(() => {
-        res.status(200).response({
+        res.status(200).send({
           response: "Password link sent successfully to email!!!",
         });
       })
