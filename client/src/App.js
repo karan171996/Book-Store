@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Components
 import AddProduct from "./components/AddProduct";
-import AdminProduct from "./components/AdminAddProduct";
+import AdminProduct from "./components/AdminProducts";
 import Shop from "./components/Shop";
 import Products from "./components/Products";
 import ProductDetail from "./components/ProductDetail";

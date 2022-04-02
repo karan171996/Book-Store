@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import "./Shop.css";
 
 //api
-import { useFetchProducts } from "../api/useFetchProducts";
+import { useFetchAdminProducts } from "../api/useFetchAdminProducts";
 
-const Shop = () => {
+const AdminProduct = () => {
   const [product, setProduct] = useState([]);
-  const [products, loading] = useFetchProducts();
+  const [products, loading] = useFetchAdminProducts();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,4 +61,4 @@ const Shop = () => {
     </div>
   );
 };
-export default Shop;
+export default AdminProduct;

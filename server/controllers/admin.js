@@ -37,21 +37,24 @@ const postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.image;
   Product.findById(productId)
     .then((product) => {
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.status(400).send({ response: "User not authrised" });
+      }
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDescription;
       product.imageUrl = updatedImageUrl;
-      return product.save();
-    })
-    .then(() => {
-      res.status(200).send({ response: "success" });
+      return product.save().then(() => {
+        res.status(200).send({ response: "success" });
+      });
     })
     .catch((err) => console.log("unable to Edit Product", err));
 };
 
 const postDeleteProduct = (req, res) => {
   const producId = req.body.productId;
-  Product.findByIdAndRemove(producId)
+
+  Product.deleteOne({ _id: producId, userId: req.user._id })
     .then(() => {
       res.status(200).send({ response: "success" });
     })
@@ -59,7 +62,7 @@ const postDeleteProduct = (req, res) => {
 };
 
 const getProducts = (req, res) => {
-  Product.find()
+  Product.find({ userId: req.user._id })
     .then((products) => {
       res.status(200).send({ products });
     })
