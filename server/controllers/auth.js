@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+const crypto = require("crypto"); // For generating random token for resetting password
 const bcrypt = require("bcryptjs"); // We used to store the password in database in hash format.
 const nodemailer = require("nodemailer");
 // const sendgridTransport = require("nodemailer-sendgrid-transport");
@@ -136,9 +136,49 @@ const postResetPassword = (req, res, next) => {
   });
 };
 
+const getNewPassword = (req, res, next) => {
+  const token = req.params.token;
+  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
+    .then((user) => {
+      console.log("user", user);
+      res.status(200).send({ userId: user._id.toString() });
+    })
+    .catch((err) => console.log("Error in account reset Password", err));
+};
+
+const postNewPassword = (req, res, next) => {
+  const password = req.body.password;
+  const userId = req.body.userId;
+  const passwordToken = req.body.passwordToken;
+  let resetUser;
+
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId,
+  })
+    .then((user) => {
+      resetUser = user;
+      return bcrypt.hash(password, 12);
+    })
+    .then((hashedPassword) => {
+      resetUser.password = hashedPassword;
+      resetUser.resetToken = undefined;
+      resetUser.resetTokenExpiration = undefined;
+
+      return resetUser.save();
+    })
+    .then(() => {
+      res.status(200).send({ response: "new Password changed" });
+    })
+    .catch((error) => console.log("Error while adding new password"));
+};
+
 module.exports = {
   postLogin,
   postLogout,
   postSignup,
   postResetPassword,
+  getNewPassword,
+  postNewPassword,
 };
