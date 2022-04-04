@@ -15,7 +15,7 @@ export const SignUp = () => {
     postSignup({
       email,
       password,
-      ...(confirmPassword?.current?.value && {
+      ...(confirmPassword?.current && {
         confirmPassword: confirmPassword.current,
       }),
     })
@@ -28,7 +28,7 @@ export const SignUp = () => {
   };
   return (
     <div>
-      <form className="product-form" onSubmit={onSubmitHandler}>
+      <form className="product-form" onSubmit={onSubmitHandler} noValidate>
         <div className="form-control">
           <label htmlFor="email">Email</label>
           <input

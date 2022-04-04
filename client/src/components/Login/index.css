@@ -1,0 +1,7 @@
+.product-form > div {
+    flex-direction: column;   
+}
+
+.product-form > div > div {
+    text-align: left;
+}

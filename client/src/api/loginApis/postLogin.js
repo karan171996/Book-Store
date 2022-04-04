@@ -6,14 +6,9 @@ export const postLogin = (payload) => {
       ...payload,
     })
     .then((res) => {
-      if (res.status === 200) {
-        return true;
-      } else {
-        return false;
-      }
+      return res;
     })
     .catch((err) => {
-      console.log("Login Error", err);
-      return false;
+      return err?.response;
     });
 };
